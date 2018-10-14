@@ -6,7 +6,7 @@ from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from aplicacion.forms import SignUpForm, CrearClaseForm
+from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -43,39 +43,30 @@ class TakeDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TakeSerializer
 
 
-#def signup(request):
-    #if request.method == 'POST':
-     #   form = SignUpForm(request.POST)
-      #  if form.is_valid():
-            # este form save, guarda en la base, solo es eso
-            # form.save(commit=False)
-       #     form.save()
-        #    return redirect('signup')
-    #else:
-     #   form = SignUpForm()
-    #return render(request, 'signup.html', {'form': form})
-
-
-
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+        form1 = SignUpForm(request.POST)
+        form2 = ProfileForm(request.POST)
+        if form2.is_valid() and form1.is_valid():
+            form1.save()
+            form2.save()
+            username = form1.cleaned_data.get('username')
+            raw_password = form1.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('index')
     else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+        form1 = SignUpForm()
+        form2 = ProfileForm()
+    return render(request, 'registration/signup.html', {'form1': form1,'form2':form2})
+
 
 
 
 def logout_view(request):
     logout(request)
     return render(request, 'index.html')
+
 
 def index(request):
     return render(request, 'index.html')
@@ -89,11 +80,14 @@ def busca(request):
     searchResult = Course.objects.filter(title__icontains=toSearch)
     return render(request, 'resultados.html', {'resultados': searchResult})
 
+
 class CourseDetailView(DetailView):
     model = Course
 
+
 class UserDetailView(DetailView):
     model = User
+
 
 @login_required
 def crearClase(request):
@@ -110,6 +104,5 @@ def crearClase(request):
         else:
             form = CrearClaseForm()
     return render(request, 'crearClase.html', {'form': form})
-
 
 # Create your views here.
