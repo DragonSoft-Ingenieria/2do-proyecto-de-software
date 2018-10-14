@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^course/(?P<pk>\d+)$', views.CourseDetailView.as_view(template_name='details/course-detail.html'), name='course-detail'),
     url(r'^user/(?P<pk>\d+)$', views.UserDetailView.as_view(template_name='details/user-detail.html'), name='user-detail'),
     url(r'^crearClase/$', views.crearClase, name='crearClase'),
-    path('profesor/', TemplateView.as_view(template_name='teacherMode/profesor.html')),
+    path('profesor/', TemplateView.as_view(template_name='teacherMode/profesor.html'),name='modoProfesor'),
 ]
 
 
