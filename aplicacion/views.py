@@ -49,8 +49,12 @@ def signup(request):
         form2 = ProfileForm(request.POST)
         if form2.is_valid() and form1.is_valid():
             form1.save()
-            form2.save()
             username = form1.cleaned_data.get('username')
+            usuario = User.objects.all().get(username=username)
+            form2 = ProfileForm(request.POST, instance=usuario.profile)
+            form2.save()
+
+
             raw_password = form1.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
