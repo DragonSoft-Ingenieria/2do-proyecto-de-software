@@ -108,24 +108,19 @@ def crearClase(request):
 def edit_account(request, pk):
     u = User.objects.get(id=pk)
     profile = u.profile
-    print(profile.user.first_name)
     if request.method == 'POST':
-        form1 = EditUserForm(request.POST, instance=u)
-        form2 = ProfileForm(request.POST, instance=profile)
-        # print(current_user.first_name)
-        print(form1.errors)
-        print(form2.is_valid())
+        POST = request.POST.copy()
+        POST['username'] = u.username
+        form1 = EditUserForm(POST, instance=u)
+        form2 = ProfileForm(POST, instance=profile)
         if form2.is_valid() and form1.is_valid():
             form1.save()
             form2.save()
-            # username = form1.cleaned_data.get('username')
-            # raw_password = form1.cleaned_data.get('password1')
-            # user = authenticate(username=username, password=raw_password)
-            # login(request, user)
+            u.set_password(form1.cleaned_data.get('password1'))
             return redirect('index')
     else:
         form1 = EditUserForm(instance=u)
         form2 = ProfileForm(instance=profile)
-    return render(request, 'registration/edit-account.html', {'form1': form1,'form2':form2})
+    return render(request, 'registration/edit-account.html', {'form1': form1, 'form2': form2})
 
 # Create your views here.

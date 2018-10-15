@@ -28,12 +28,38 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields= ('language','birthdate','profile_pic')
+        widgets = {
+            'language': forms.Select(attrs={'class': 'form-control'}),
+            'birthdate': forms.DateInput(attrs={'class': 'form-control datepicker'}),
+        }
+        choices = {
+            'language': (('eng', 'Inglés'), ('esp', 'Español'),),
+        }
+
 
 class EditUserForm(forms.ModelForm):
+    password1 = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
-        fields = ('first_name', )
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+        widgets = {
+            'username' : forms.TextInput(attrs={'class': 'form-control', 'disabled': ''}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super(EditUserForm, self).clean()
+        pwd1 = cleaned_data.get('password1')
+        pwd2 = cleaned_data.get('password2')
+        if pwd1 and pwd2 and pwd1 != pwd2:
+            self._errors['password2'] = self.error_class(['Las contraseñas no son iguales.'])
+            del self.cleaned_data['password2']
+        return cleaned_data
+
 
 class CrearClaseForm(forms.ModelForm):
     class Meta:

@@ -2,125 +2,122 @@
 
 {% block content %}
     <div class="container">
-    <div class="row m-y-2">
-        <!-- edit form column -->
-        <div class="col-lg-4 text-lg-center">
-            <h2>Edit Profile</h2>
-        </div>
-        <div class="col-lg-8">
-            <div class="alert alert-info alert-dismissable"> <a class="panel-close close" data-dismiss="alert">×</a>
-                This is an <strong>alert</strong>. Use this to show important messages to the user.
+        <div class="row m-y-2">
+            <!-- edit form column -->
+            <div class="col-lg-4 text-lg-center">
+                <h2>Configurar cuenta</h2>
+            </div>
+            <div class="col-lg-8">
+                <div class="alert alert-info alert-dismissable"> <a class="panel-close close" data-dismiss="alert">×</a>
+                    <strong>Alerta</strong>. Usa esto para mostrar mensajes importantes para el usuario.
+                </div>
+            </div>
+            <div class="col-lg-8 push-lg-4 personal-info">
+                <form role="form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        {{ form1.first_name.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.first_name.id_for_label }}">Primer nombre</label>
+                        <div class="col-lg-9">
+                            {{ form1.first_name }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.last_name.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.last_name.id_for_label }}">Primer apellido</label>
+                        <div class="col-lg-9">
+                            {{ form1.last_name }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form2.birthdate.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form2.birthdate.id_for_label }}">Fecha de nacimiento</label>
+                        <div class="col-lg-9">
+                            {{ form2.birthdate }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.last_name.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.last_name.id_for_label }}">Primer apellido</label>
+                        <div class="col-lg-9">
+                            {{ form1.last_name }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Dirección</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" value="" placeholder="Calle" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label"></label>
+                        <div class="col-lg-6">
+                            <input class="form-control" type="text" value="" placeholder="Ciudad" />
+                        </div>
+                        <div class="col-lg-3">
+                            <input class="form-control" type="text" value="" placeholder="Estado" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Huso horario</label>
+                        <div class="col-lg-9">
+                            <select id="user_time_zone" class="form-control" size="0">
+                                <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                                <option value="Alaska">(GMT-09:00) Alaska</option>
+                                <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                                <option value="Arizona">(GMT-07:00) Arizona</option>
+                                <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                                <option value="Central Time (US &amp; Canada)"
+                                        selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                                <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                                <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.username.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.username.id_for_label }}">Nombre de usuario</label>
+                        <div class="col-lg-9">
+                            {{ form1.username }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.email.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.email.id_for_label }}">Email</label>
+                        <div class="col-lg-9">
+                            {{ form1.email }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.password1.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.password1.id_for_label }}">Contraseña</label>
+                        <div class="col-lg-9">
+                            {{ form1.password1 }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form1.password2.errors }}
+                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.password2.id_for_label }}">Confirmar contraseña</label>
+                        <div class="col-lg-9">
+                            {{ form1.password2 }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label"></label>
+                        <div class="col-lg-9">
+                            <input type="reset" class="btn btn-secondary" value="Cancelar" />
+                            <input type="submit" class="btn btn-primary" value="Guardar Cambios" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 pull-lg-8 text-xs-center">
+                <img src="//placehold.it/150" class="m-x-auto img-fluid img-circle" alt="avatar" />
+                <label class="custom-file">
+                    <input type="file" id="file" class="custom-file-input">
+                    <span class="custom-file-control">Subir foto</span>
+                </label>
             </div>
         </div>
-        <div class="col-lg-8 push-lg-4 personal-info">
-             <form role="form" method="post">
-             {% csrf_token %}
-                <div class="fieldWrapper form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.first_name.id_for_label }}">First name</label>
-                    {{ form1.first_name }}
-{#                    <div class="col-lg-9">#}
-{#                        <input class="form-control" type="text" value="{{ form2.instance }}" />#}
-{#                    </div>#}
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Last name</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" value="v" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Email</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="email" value="email@gmail.com" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Company</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" value="" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Website</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="url" value="" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Address</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" value="" placeholder="Street" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                    <div class="col-lg-6">
-                        <input class="form-control" type="text" value="" placeholder="City" />
-                    </div>
-                    <div class="col-lg-3">
-                        <input class="form-control" type="text" value="" placeholder="State" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Time Zone</label>
-                    <div class="col-lg-9">
-                        <select id="user_time_zone" class="form-control" size="0">
-                            <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                            <option value="Alaska">(GMT-09:00) Alaska</option>
-                            <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                            <option value="Arizona">(GMT-07:00) Arizona</option>
-                            <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                            <option value="Central Time (US &amp; Canada)"
-                            selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                            <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                            <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" value="janeuser" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Password</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="password" value="11111122333" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="password" value="11111122333" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                    <div class="col-lg-9">
-                        <input type="reset" class="btn btn-secondary" value="Cancel" />
-                        <input type="submit" class="btn btn-primary" value="Save Changes" />
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-lg-4 pull-lg-8 text-xs-center">
-                <img src="//placehold.it/150" class="m-x-auto img-fluid img-circle" alt="avatar" />
-                <h6 class="m-t-2">Upload a different photo</h6>
-                <label class="custom-file">
-                  <input type="file" id="file" class="custom-file-input">
-                  <span class="custom-file-control">Choose file</span>
-                </label>
-        </div>
-    </div>
-</div>
-
-    <div class="col-md-6 offset-3 card text-center">
-  <img src="{{  user.profile.profile_pic }}" class="img-responsive">
-  <h1>{{ user.first_name }}</h1>
-
-  <p><strong>E-mail:</strong> {{ user.email }}</p>
-  <p><strong>Idioma:</strong> {{ user.profile.language }}</p>
-  <p><strong>Fecha de nacimiento:</strong> {{ user.profile.birthdate }}</p>
     </div>
 {% endblock %}
