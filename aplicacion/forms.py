@@ -29,7 +29,11 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields= ('language','birthdate','profile_pic')
 
+class EditUserForm(forms.ModelForm):
 
+    class Meta:
+        model = User
+        fields = ('first_name', )
 
 class CrearClaseForm(forms.ModelForm):
     class Meta:

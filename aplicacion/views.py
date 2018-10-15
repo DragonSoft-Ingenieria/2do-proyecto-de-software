@@ -6,7 +6,7 @@ from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm
+from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -104,5 +104,28 @@ def crearClase(request):
         else:
             form = CrearClaseForm()
     return render(request, 'crearClase.html', {'form': form})
+
+def edit_account(request, pk):
+    u = User.objects.get(id=pk)
+    profile = u.profile
+    print(profile.user.first_name)
+    if request.method == 'POST':
+        form1 = EditUserForm(request.POST, instance=u)
+        form2 = ProfileForm(request.POST, instance=profile)
+        # print(current_user.first_name)
+        print(form1.errors)
+        print(form2.is_valid())
+        if form2.is_valid() and form1.is_valid():
+            form1.save()
+            form2.save()
+            # username = form1.cleaned_data.get('username')
+            # raw_password = form1.cleaned_data.get('password1')
+            # user = authenticate(username=username, password=raw_password)
+            # login(request, user)
+            return redirect('index')
+    else:
+        form1 = EditUserForm(instance=u)
+        form2 = ProfileForm(instance=profile)
+    return render(request, 'registration/edit-account.html', {'form1': form1,'form2':form2})
 
 # Create your views here.

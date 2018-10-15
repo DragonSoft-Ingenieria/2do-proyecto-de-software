@@ -51,16 +51,27 @@
                     <a class="nav-link" href="#">Clases</a>
                 </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-
-                    <a class="nav-link font-weight-bold" href="{% url 'user-detail' user.id  %}">{{ user.username }}</a>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle nav-link font-weight-bold" data-toggle="dropdown" href="#">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="nav-link" href="{% url 'user-detail' user.id  %}">
+                                    Perfil
+                                </a>
+                                <a class="nav-link" href="{% url 'edit-account' user.id  %}">
+                                    Ajustes
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Salir</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">Regístratre</a>
+                        <a class="nav-link" href="{% url 'signup' %}">Regístrate</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Inicia Sesión</a>
