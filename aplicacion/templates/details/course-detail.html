@@ -3,10 +3,13 @@
 {% block content %}
     <div class="col-md-6 offset-3 card text-center">
         <h1>Clase: {{ course.title }}</h1>
-
+        {% csrf_token %}
         <p><strong>Profesor:</strong> <a href="">{{ course.teacher }}</a></p> <!-- Link para el profesor -->
         <p><strong>Descripción:</strong> {{ course.description }}</p>
         <p><strong>Nivel:</strong> {{ course.level }}</p>
-        <button class="btn btn-primary col-md-4 offset-4">Tomar clase</button>
+
+        <a class="btn btn-primary col-md-4 offset-4" href="{% url 'tomarClase' %}?clase={{ course.id }}">Tomar clase</a>
+
+
     </div>
 {% endblock %}

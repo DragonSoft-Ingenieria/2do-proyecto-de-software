@@ -92,6 +92,17 @@ class CourseDetailView(DetailView):
 class UserDetailView(DetailView):
     model = User
 
+@login_required
+def tomarClase(request):
+    if request.GET.get('clase'):
+        id_clase = request.GET.get('clase')
+        current_user = request.user
+        tomado = Take()
+        tomado.student = current_user.profile
+        tomado.course = Course.objects.get(pk=id_clase)
+        tomado.save()
+    return redirect('index')
+
 
 @login_required
 def crearClase(request):

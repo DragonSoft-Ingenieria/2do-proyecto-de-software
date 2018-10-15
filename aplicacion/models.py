@@ -38,8 +38,8 @@ class Course(models.Model):
 class Take(models.Model):
     student     = models.ForeignKey(Profile, on_delete=models.CASCADE)
     course     = models.ForeignKey(Course, on_delete=models.CASCADE)
-    student_rating = models.IntegerField()
-    teacher_rating = models.IntegerField()
+    student_rating = models.IntegerField(blank=True,null=True)
+    teacher_rating = models.IntegerField(blank=True,null=True)
 
     def __str__(self):
         return self.course.title + " - " + self.student.user.first_name
