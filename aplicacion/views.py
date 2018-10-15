@@ -93,6 +93,10 @@ class UserDetailView(DetailView):
     model = User
 
 @login_required
+def modoProfesor(request):
+    return render(request,'teacherMode/profesor.html')
+
+@login_required
 def tomarClase(request):
     if request.GET.get('clase'):
         id_clase = request.GET.get('clase')
@@ -120,6 +124,7 @@ def crearClase(request):
             form = CrearClaseForm()
     return render(request, 'crearClase.html', {'form': form})
 
+@login_required
 def edit_account(request, pk):
     u = User.objects.get(id=pk)
     profile = u.profile

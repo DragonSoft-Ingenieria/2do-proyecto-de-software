@@ -24,7 +24,8 @@ urlpatterns = [
     url(r'^user/(?P<pk>\d+)/edit$', views.edit_account, name='edit-account'),
     url(r'^crearClase/$', views.crearClase, name='crearClase'),
     path('tomarClase', views.tomarClase,name='tomarClase'),
-    path('profesor/', TemplateView.as_view(template_name='teacherMode/profesor.html'),name='modoProfesor'),
+
+    path('profesor/', views.modoProfesor,name='modoProfesor'),
 
 ]
 

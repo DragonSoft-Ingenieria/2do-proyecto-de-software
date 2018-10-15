@@ -27,11 +27,14 @@ class ProfileForm(forms.ModelForm):
         ('esp', 'Español'),
         ('syr', 'Sirio'),
     )
-    language = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+    profile_pic = forms.ImageField(label='Imagen de perfil')
+    language = forms.ChoiceField(label='Idioma',widget=forms.Select, choices=CHOICES)
+    birthdate = forms.DateField(label='Fecha de nacimiento',widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = Profile
-        fields= ('language','birthdate')
+        fields= ('language','birthdate','profile_pic')
+
 
 
 class EditUserForm(forms.ModelForm):
