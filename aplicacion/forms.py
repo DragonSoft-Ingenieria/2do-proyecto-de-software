@@ -24,10 +24,9 @@ class SignUpForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
-
     class Meta:
         model = Profile
-        fields= ('language','birthdate','profile_pic')
+        fields= ('language','birthdate')
 
 
 
