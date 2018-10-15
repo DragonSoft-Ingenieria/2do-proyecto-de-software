@@ -6,7 +6,7 @@ from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm
+from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -119,5 +119,25 @@ def crearClase(request):
         else:
             form = CrearClaseForm()
     return render(request, 'crearClase.html', {'form': form})
+
+def edit_account(request, pk):
+    u = User.objects.get(id=pk)
+    profile = u.profile
+    if request.method == 'POST':
+        POST = request.POST.copy()
+        POST['username'] = u.username # No se puede cambiar el username y django no rellena este campo automágicamente
+        form1 = EditUserForm(POST, instance=u)
+        form2 = ProfileForm(POST, instance=profile)
+        if form2.is_valid() and form1.is_valid():
+            form1.save()
+            form2.save()
+            u.set_password(form1.cleaned_data.get('password1'))
+            if form1.cleaned_data.get('password1'):
+                u.save()
+            return redirect('index')
+    else:
+        form1 = EditUserForm(instance=u)
+        form2 = ProfileForm(instance=profile)
+    return render(request, 'registration/edit-account.html', {'form1': form1, 'form2': form2})
 
 # Create your views here.

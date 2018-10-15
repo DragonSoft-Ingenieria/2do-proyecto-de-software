@@ -7,8 +7,6 @@ from django.contrib.auth.models import User
 from aplicacion.models import Course
 
 
-
-
 class SignUpForm(UserCreationForm):
     username = forms.CharField(label='Nombre de usuario', min_length=4, max_length=150)
     first_name = forms.CharField(label="Primer nombre",max_length=30, required=True)
@@ -24,10 +22,41 @@ class SignUpForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
+    CHOICES = (
+        ('eng', 'Inglés'),
+        ('esp', 'Español'),
+        ('syr', 'Sirio'),
+    )
+    language = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+
     class Meta:
         model = Profile
         fields= ('language','birthdate')
 
+
+class EditUserForm(forms.ModelForm):
+    password1 = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+        widgets = {
+            'username' : forms.TextInput(attrs={'class': 'form-control', 'disabled': ''}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super(EditUserForm, self).clean()
+        pwd1 = cleaned_data.get('password1')
+        pwd2 = cleaned_data.get('password2')
+        if pwd1 != pwd2:
+            print('cleaning')
+            self._errors['password2'] = self.error_class(['Las contraseñas no son iguales.'])
+            del self.cleaned_data['password2']
+        return cleaned_data
 
 
 class CrearClaseForm(forms.ModelForm):
