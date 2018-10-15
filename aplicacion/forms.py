@@ -24,17 +24,16 @@ class SignUpForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
+    CHOICES = (
+        ('eng', 'Inglés'),
+        ('esp', 'Español'),
+        ('syr', 'Sirio'),
+    )
+    language = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
 
     class Meta:
         model = Profile
         fields= ('language','birthdate','profile_pic')
-        widgets = {
-            'language': forms.Select(attrs={'class': 'form-control'}),
-            'birthdate': forms.DateInput(attrs={'class': 'form-control datepicker'}),
-        }
-        choices = {
-            'language': (('eng', 'Inglés'), ('esp', 'Español'),),
-        }
 
 
 class EditUserForm(forms.ModelForm):
@@ -55,7 +54,8 @@ class EditUserForm(forms.ModelForm):
         cleaned_data = super(EditUserForm, self).clean()
         pwd1 = cleaned_data.get('password1')
         pwd2 = cleaned_data.get('password2')
-        if pwd1 and pwd2 and pwd1 != pwd2:
+        if pwd1 != pwd2:
+            print('cleaning')
             self._errors['password2'] = self.error_class(['Las contraseñas no son iguales.'])
             del self.cleaned_data['password2']
         return cleaned_data

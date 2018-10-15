@@ -110,13 +110,15 @@ def edit_account(request, pk):
     profile = u.profile
     if request.method == 'POST':
         POST = request.POST.copy()
-        POST['username'] = u.username
+        POST['username'] = u.username # No se puede cambiar el username y django no rellena este campo automágicamente
         form1 = EditUserForm(POST, instance=u)
         form2 = ProfileForm(POST, instance=profile)
         if form2.is_valid() and form1.is_valid():
             form1.save()
             form2.save()
             u.set_password(form1.cleaned_data.get('password1'))
+            if form1.cleaned_data.get('password1'):
+                u.save()
             return redirect('index')
     else:
         form1 = EditUserForm(instance=u)
