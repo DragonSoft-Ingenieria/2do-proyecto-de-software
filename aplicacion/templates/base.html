@@ -27,76 +27,74 @@
     <title>{% block title %}Base{% endblock %}</title>
 </head>
 <body>
-  {% block navBar %}
+{% block navBar %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">ShareProf</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">ShareProf</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">Inicio
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'modoProfesor' %}">Modo Profesor</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Clases</a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle nav-link font-weight-bold" data-toggle="dropdown" href="#">
-                            {{ user.username }}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'index' %}">Inicio
+                            <span class="sr-only">(current)</span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="nav-link" href="{% url 'user-detail' user.id  %}">
-                                    Perfil
-                                </a>
-                                <a class="nav-link" href="{% url 'edit-account' user.id  %}">
-                                    Configuración
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Salir</a>
+                        <a class="nav-link" href="{% url 'modoProfesor' %}">Modo Profesor</a>
                     </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">Regístrate</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Inicia Sesión</a>
-                    </li>
-                {% endif %}
 
-            </ul>
-            <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'busca' %}">
-                <input required id="busqueda" name="busqueda" class="form-control mr-sm-2" type="search"
-                       placeholder="Busca una clase"
-                       aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-            </form>
+                    {% if user.is_authenticated %}
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle nav-link font-weight-bold" data-toggle="dropdown" href="#">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="nav-link" href="{% url 'user-detail' user.id %}">
+                                        Perfil
+                                    </a>
+                                    <a class="nav-link" href="{% url 'edit-account'%}">
+                                        Configuración
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Salir</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Regístrate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Inicia Sesión</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'busca' %}">
+                    <input required id="busqueda" name="busqueda" class="form-control mr-sm-2" type="search"
+                           placeholder="Busca una clase"
+                           aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                </form>
+            </div>
         </div>
-    </div>
-</nav>
-   {% endblock %}
+    </nav>
+{% endblock %}
 
 
 <header>
 </header>
 <main>
-<br>
-<br>
-<br>
+    <br>
+    <br>
+    <br>
     {% block content %}
     {% endblock %}
 </main>

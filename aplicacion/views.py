@@ -125,8 +125,8 @@ def crearClase(request):
     return render(request, 'crearClase.html', {'form': form})
 
 @login_required
-def edit_account(request, pk):
-    u = User.objects.get(id=pk)
+def edit_account(request):
+    u = request.user
     profile = u.profile
     if request.method == 'POST':
         POST = request.POST.copy()

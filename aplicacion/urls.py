@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^tomados/$', views.TakeList.as_view()),
     url(r'^course/(?P<pk>\d+)$', views.CourseDetailView.as_view(template_name='details/course-detail.html'), name='course-detail'),
     url(r'^user/(?P<pk>\d+)$', views.UserDetailView.as_view(template_name='details/user-detail.html'), name='user-detail'),
-    url(r'^user/(?P<pk>\d+)/edit$', views.edit_account, name='edit-account'),
+    url(r'^user/edit$', views.edit_account, name='edit-account'),
     url(r'^crearClase/$', views.crearClase, name='crearClase'),
     path('tomarClase', views.tomarClase,name='tomarClase'),
 

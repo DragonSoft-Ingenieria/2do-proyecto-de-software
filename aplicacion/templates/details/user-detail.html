@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="col-md-6 offset-3 card text-center">
-  <img src="{{  user.profile.profile_pic }}" class="img-responsive">
-  <h1>{{ user.first_name }}</h1>
-
-  <p><strong>E-mail:</strong> {{ user.email }}</p>
-  <p><strong>Idioma:</strong> {{ user.profile.language }}</p>
-  <p><strong>Fecha de nacimiento:</strong> {{ user.profile.birthdate }}</p>
+        <img src={{ user.profile.profile_pic }} class="img-responsive">
+        <h1>{{ user.first_name }}</h1>
+        <p><strong>Apellido</strong> {{ user.last_name }}</p>
+        <p><strong>E-mail:</strong> {{ user.email }}</p>
+        <p><strong>Idioma:</strong> {{ user.profile.language }}</p>
+        <p><strong>Fecha de nacimiento:</strong> {{ user.profile.birthdate }}</p>
     </div>
 {% endblock %}
