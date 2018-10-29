@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^users/$', views.UserList.as_view()),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^index/$', views.index, name='index'),
+    url(r'^CorreoAviso/$', views.CorreoAviso, name='CorreoAviso'),
     url(r'^course/$', views.CourseList.as_view()),
     url(r'^busca/$', views.busca,name='busca'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
@@ -23,7 +24,9 @@ urlpatterns = [
     url(r'^user/(?P<pk>\d+)$', views.UserDetailView.as_view(template_name='details/user-detail.html'), name='user-detail'),
     url(r'^user/edit$', views.edit_account, name='edit-account'),
     url(r'^crearClase/$', views.crearClase, name='crearClase'),
+    url(r'^contactoEmail/$', views.contactoEmail, name='contactoEmail'),
     path('tomarClase', views.tomarClase,name='tomarClase'),
+    path('enviarAviso', views.enviarAviso,name='enviarAviso'),
 
     path('profesor/', views.modoProfesor,name='modoProfesor'),
 ]
