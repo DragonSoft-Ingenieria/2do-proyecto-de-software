@@ -27,14 +27,13 @@ class ProfileForm(forms.ModelForm):
         ('esp', 'Español'),
         ('syr', 'Sirio'),
     )
-    #profile_pic = forms.ImageField(label='Imagen de perfil')
-    language = forms.ChoiceField(label='Idioma',widget=forms.Select, choices=CHOICES)
-    birthdate = forms.DateField(label='Fecha de nacimiento',widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    profile_pic = forms.ImageField(label='Imagen de perfil', widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+    language = forms.ChoiceField(label='Idioma', widget=forms.Select, choices=CHOICES)
+    birthdate = forms.DateField(label='Fecha de nacimiento', widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = Profile
-        fields= ('language','birthdate')
-
+        fields = ('language', 'birthdate', 'profile_pic')
 
 
 class EditUserForm(forms.ModelForm):
@@ -56,7 +55,6 @@ class EditUserForm(forms.ModelForm):
         pwd1 = cleaned_data.get('password1')
         pwd2 = cleaned_data.get('password2')
         if pwd1 != pwd2:
-            print('cleaning')
             self._errors['password2'] = self.error_class(['Las contraseñas no son iguales.'])
             del self.cleaned_data['password2']
         return cleaned_data

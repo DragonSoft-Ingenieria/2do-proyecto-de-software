@@ -6,7 +6,7 @@
     <div class="card col-md-5 offset-md-4 col-xs-12" >
         <div style="margin-top: 20px; text-align: center">
              <h2>Regístrate</h2>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form1.as_p }}
             {{ form2.as_p }}

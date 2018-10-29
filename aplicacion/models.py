@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import os, time, datetime
+
+
+def upload_profile_pic_to(path):
+    def wrapper(instance, filename):
+        print('y' if instance else 'n')
+        ts = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%S')
+        ext = filename.split('.')[-1]
+        filename = '{}/{}.{}'.format(instance.pk, ts, ext)
+        return os.path.join(path, filename)
+    return wrapper
 
 
 class Profile(models.Model):
@@ -10,7 +21,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     language  = models.CharField(max_length=30,blank=True)
     birthdate = models.DateField(default='2000-01-01',blank=True)
-    profile_pic = models.ImageField(blank=True, upload_to='profile_pics', default='profile_pics/no-image.jpg')
+    profile_pic = models.ImageField(blank=True, upload_to=upload_profile_pic_to('profile_pics'), default='profile_pics/no-image.jpg')
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

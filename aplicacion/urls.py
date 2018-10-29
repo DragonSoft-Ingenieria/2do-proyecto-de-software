@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from django.urls import path
+from django.conf.urls.static import static
+from django.views.static import serve
 from django.contrib.auth.views import LogoutView
-from django.contrib.auth import views as auth_views
-from django.views.generic import TemplateView
 from rest_framework.urlpatterns import format_suffix_patterns
 from aplicacion import views, errorViews
 from ShareProf import settings
@@ -26,9 +26,10 @@ urlpatterns = [
     path('tomarClase', views.tomarClase,name='tomarClase'),
 
     path('profesor/', views.modoProfesor,name='modoProfesor'),
-
 ]
 
-
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns = format_suffix_patterns(urlpatterns)
+
 handler404 = errorViews.noEncontrado

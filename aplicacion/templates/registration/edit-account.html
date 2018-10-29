@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
+    <form class="container" role="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="row m-y-2">
             <!-- edit form column -->
             <div class="col-lg-4 text-lg-center">
@@ -12,70 +13,65 @@
                     <strong>Alerta</strong>. Usa esto para mostrar mensajes importantes para el usuario.
                 </div>
             </div>
-            <div class="col-lg-8 push-lg-4 personal-info">
-                <form role="form" method="post">
-                    {% csrf_token %}
-                    <div class="form-group row">
-                        {{ form1.first_name.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.first_name.id_for_label }}">Primer nombre</label>
-                        <div class="col-lg-9">
-                            {{ form1.first_name }}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        {{ form1.last_name.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.last_name.id_for_label }}">Primer apellido</label>
-                        <div class="col-lg-9">
-                            {{ form1.last_name }}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        {{ form2.birthdate.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form2.birthdate.id_for_label }}">Fecha de nacimiento</label>
-                        <div class="col-lg-9">
-                            {{ form2.birthdate }}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        {{ form2.language.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form2.language.id_for_label }}">Idioma</label>
-                        <div class="col-lg-9">
-                            {{ form2.language }}
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        {{ form1.username.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.username.id_for_label }}">Nombre de usuario</label>
-                        <div class="col-lg-9">
-                            {{ form1.username }}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        {{ form1.email.errors }}
-                        <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.email.id_for_label }}">Email</label>
-                        <div class="col-lg-9">
-                            {{ form1.email }}
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label"></label>
-                        <div class="col-lg-9">
-                            <input type="reset" class="btn btn-secondary" value="Cancelar" />
-                            <input type="submit" class="btn btn-primary" value="Guardar Cambios" />
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4 pull-lg-8 text-xs-center">
-                <img src="//placehold.it/150" class="m-x-auto img-fluid img-circle" alt="avatar" />
+            <div class="col-md-3 pull-lg-8 text-xs-center">
+                <img src="{{ user.profile.profile_pic.url }}" class="m-x-auto img-fluid img-circle" alt="avatar" />
+                {{ form2.profile_pic.errors }}
                 <label class="custom-file">
-                    <input type="file" id="file" class="custom-file-input">
+                    {{ form2.profile_pic }}
                     <span class="custom-file-control">Subir foto</span>
                 </label>
             </div>
+            <div class="col-lg-8 push-lg-4 personal-info">
+                <div class="form-group row">
+                    {{ form1.first_name.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.first_name.id_for_label }}">Primer nombre</label>
+                    <div class="col-lg-9">
+                        {{ form1.first_name }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form1.last_name.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.last_name.id_for_label }}">Primer apellido</label>
+                    <div class="col-lg-9">
+                        {{ form1.last_name }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form2.birthdate.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form2.birthdate.id_for_label }}">Fecha de nacimiento</label>
+                    <div class="col-lg-9">
+                        {{ form2.birthdate }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form2.language.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form2.language.id_for_label }}">Idioma</label>
+                    <div class="col-lg-9">
+                        {{ form2.language }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form1.username.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.username.id_for_label }}">Nombre de usuario</label>
+                    <div class="col-lg-9">
+                        {{ form1.username }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form1.email.errors }}
+                    <label class="col-lg-3 col-form-label form-control-label" for="{{ form1.email.id_for_label }}">Email</label>
+                    <div class="col-lg-9">
+                        {{ form1.email }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label"></label>
+                    <div class="col-lg-9">
+                        <input type="reset" class="btn btn-secondary" value="Cancelar" />
+                        <input type="submit" class="btn btn-primary" value="Guardar Cambios" />
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </form>
 {% endblock %}
