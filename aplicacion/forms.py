@@ -1,10 +1,13 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms.widgets import DateInput
+from django.forms.widgets import NumberInput
 from aplicacion.models import Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from aplicacion.models import Course
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
 
 class SignUpForm(UserCreationForm):
@@ -62,16 +65,29 @@ class EditUserForm(forms.ModelForm):
         return cleaned_data
 
 
+class Formulario(forms.Form):
+    correo = forms.EmailField()
+    mensaje = forms.CharField()
+
+
 class CrearClaseForm(forms.ModelForm):
+    CHOICES = (
+        ('Matutino', 'Matutino'),
+        ('Vespertino', 'Vespertino'),
+        ('Noctuno', 'Nocturno'),
+    )
+
+    horario = forms.ChoiceField(label='Horario',widget=forms.Select, choices=CHOICES)
     class Meta:
         model = Course
         exclude = ['teacher']
-        fields = ('id', 'title', 'description', 'level')
+        fields = ('id', 'title', 'description', 'level','horario','precio')
         widgets = {
             # 'teacher' : forms.Select(attrs={'class' : 'form-control'}),
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nombre de la clase'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nombre de la asesoria'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'level': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nivel de la clase'}),
+            'level': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nivel de la asesoria'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el precio de la asesoria'}),
 
         }
 
@@ -80,6 +96,8 @@ class CrearClaseForm(forms.ModelForm):
             'title': _('Titulo'),
             'description': _('Descripcion'),
             'level': _('Nivel'),
+            'precio':_('Precio'),
+            #'horario': _('Horario'),
         }
 
 

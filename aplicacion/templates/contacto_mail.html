@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+     <div class="col-md-6 offset-3 card text-center">
+        <h1>Clase</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{formulario.as_p}}     
+            <button type="submit">Crear asesoria</button>
+        </form>
+    </div>
+{% endblock %}

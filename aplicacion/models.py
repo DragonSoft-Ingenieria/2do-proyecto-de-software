@@ -30,6 +30,9 @@ class Course(models.Model):
     title       = models.CharField(max_length=50)
     description = models.TextField()
     level       = models.CharField(max_length=30)
+    horario     = models.CharField(max_length=30,default = 'MATUTINO')
+    precio      = models.IntegerField(default=0)
+    
 
     def __str__(self):
         return self.title

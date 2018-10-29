@@ -6,11 +6,16 @@ from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm
+from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm,Formulario
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic import DetailView
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 
 
 class UserList(generics.ListCreateAPIView):
@@ -41,6 +46,23 @@ class TakeList(generics.ListCreateAPIView):
 class TakeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Take.objects.all()
     serializer_class = TakeSerializer
+
+@login_required
+def contactoEmail(request):
+    if request.method == 'POST':
+        formulario = Formulario(request.POST)
+        if formulario.is_valid():
+            asunto = 'Confirmacion de asesoria'
+            mensaje = formulario.cleaned_data['mensaje']
+            mail = EmailMessage(asunto,mensaje,to=['panlocastellanos@gmail.com'])
+            mail.send()
+            #send_mail('subject', 'body of the message', 'panlocastellanos@gmail.com', ['panlocastellanos@gmail.com',])
+            messages.success(request, 'La asesoria ha sido solicitada, espera una respuesta')
+            return redirect('contactoEmail')
+        return HttpResponseRedirect('/')
+    else:
+        formulario = Formulario()
+    return render(request, 'contacto_mail.html', {'formulario': formulario})
 
 
 def signup(request):
@@ -75,6 +97,10 @@ def logout_view(request):
 def index(request):
     return render(request, 'index.html')
 
+def CorreoAviso(request):
+    return render(request, 'CorreoAviso.html')
+
+
 
 def busca(request):
     toSearch = request.GET['busqueda']
@@ -95,6 +121,12 @@ class UserDetailView(DetailView):
 @login_required
 def modoProfesor(request):
     return render(request,'teacherMode/profesor.html')
+
+@login_required
+def enviarAviso(request):
+    mail = EmailMessage('Confirmacion de asesoria','Han solicitado una de tus asesorias',to=['panlocastellanos@gmail.com'])
+    mail.send()
+    return HttpResponseRedirect('CorreoAviso')
 
 @login_required
 def tomarClase(request):

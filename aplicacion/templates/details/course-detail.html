@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
     <div class="col-md-6 offset-3 card text-center">
         <h1>Clase: {{ course.title }}</h1>
         {% csrf_token %}
         <p><strong>Profesor:</strong> <a href="">{{ course.teacher }}</a></p> <!-- Link para el profesor -->
         <p><strong>Descripción:</strong> {{ course.description }}</p>
         <p><strong>Nivel:</strong> {{ course.level }}</p>
+        <p><strong>Turno:</strong> {{ course.horario }}</p>
+        <p><strong>Precio: $</strong> {{ course.precio }} MXN</p>
 
-        <a class="btn btn-primary col-md-4 offset-4" href="{% url 'tomarClase' %}?clase={{ course.id }}">Tomar clase</a>
+        <a class="btn btn-primary col-md-4 offset-4" href="{% url 'enviarAviso' %}?teacher = {{ course.teacher.email }}">Tomar asesoria</a>
 
-
+    
     </div>
+
+   
 {% endblock %}
