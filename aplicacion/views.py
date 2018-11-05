@@ -118,7 +118,9 @@ class UserDetailView(DetailView):
 
 @login_required
 def modoProfesor(request):
-    return render(request,'teacherMode/profesor.html')
+    current_user = request.user
+    searchResult = Course.objects.filter(teacher=current_user.profile.id)
+    return render(request,'teacherMode/profesor.html', {'resultados': searchResult})
 
 @login_required
 def enviarAviso(request):
