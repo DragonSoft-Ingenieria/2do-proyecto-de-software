@@ -16,6 +16,10 @@ class Profile(models.Model):
     birthdate = models.DateField(default='2000-01-01',blank=True)
     profile_pic = models.ImageField(blank=True, upload_to=upload_profile_pic_to,
                                     default='profile_pics/no-image.jpg')
+    class Meta:
+        permissions = (
+            ('is_teacher', 'Teacher permissions'),
+        )
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

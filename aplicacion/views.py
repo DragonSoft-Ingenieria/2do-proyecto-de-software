@@ -5,6 +5,7 @@ from aplicacion.serializers import UserSerializer, CourseSerializer, TakeSeriali
 from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import login, authenticate
 from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm,Formulario
 from django.shortcuts import render, redirect
@@ -116,6 +117,7 @@ class CourseDetailView(DetailView):
 class UserDetailView(DetailView):
     model = User
 
+@user_passes_test(lambda u: u.has_perm('is_teacher'))
 @login_required
 def modoProfesor(request):
     current_user = request.user
