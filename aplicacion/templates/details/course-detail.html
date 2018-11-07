@@ -12,10 +12,10 @@
         <p><strong>Turno:</strong> {{ course.horario }}</p>
         <p><strong>Precio: $</strong> {{ course.precio }} MXN</p>
 
-        <a class="btn btn-primary col-md-4 offset-4" href="{% url 'enviarAviso' course.teacher.user.id%}">Tomar asesoria</a>
+        <a class="btn btn-primary col-md-4 offset-4" href="{% url 'enviarAviso' course.teacher.user.id course.id%}">Tomar asesoria</a>
 
-    
+
     </div>
 
-   
+
 {% endblock %}

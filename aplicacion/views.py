@@ -104,21 +104,21 @@ def signup(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            user.save()
-            current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
-            message = render_to_string('registration/acc_active_email.html', {
+            if user.save():
+                current_site = get_current_site(request)
+                mail_subject = 'Activate your blog account.'
+                message = render_to_string('registration/acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                 'token':account_activation_token.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                        mail_subject, message, to=[to_email]
-            )
-            email.send()
-            return HttpResponse('Por favor confirma tu correo para completar el registro')
+                })
+                to_email = form.cleaned_data.get('email')
+                email = EmailMessage(
+                mail_subject, message, to=[to_email]
+                )
+                email.send()
+                return HttpResponse('Por favor confirma tu correo para completar el registro')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -146,10 +146,6 @@ def logout_view(request):
 def index(request):
     return render(request, 'index.html')
 
-
-
-
-
 def busca(request):
     toSearch = request.GET['busqueda']
     if not toSearch:
@@ -166,19 +162,48 @@ class CourseDetailView(DetailView):
 class UserDetailView(DetailView):
     model = User
 
-@user_passes_test(lambda u: u.has_perm('aplicacion.is_teacher'))
+#@user_passes_test(lambda u: u.has_perm('aplicacion.is_teacher'))
 @login_required
 def modoProfesor(request):
     current_user = request.user
     searchResult = Course.objects.filter(teacher=current_user.profile.id)
     return render(request,'teacherMode/profesor.html', {'resultados': searchResult})
 
+#@user_passes_test(lambda u: u.has_perm('aplicacion.is_teacher'))
+#@login_required
+def aceptar(request,key):
+    course = Course.objects.get(pk=key)
+    taken = Take.objects.filter(course=key)
+    students = []
+    clase = key
+    for t in taken:
+        s = User.objects.get(profile=t.student)
+        if(not t.aceptada and s not in students):
+            students.append(s)
+    return render(request,'teacherMode/accept.html', {'resultados': students, 'clase': clase})
+
+
 @login_required
-def enviarAviso(request,key):
+def enviarAviso(request,key,clase):
+     user = User.objects.get(pk=key)
+     current_user = request.user
+     tomado = Take()
+     tomado.student = current_user.profile
+     tomado.course = Course.objects.get(pk=clase)
+     tomado.save()
+     mail = EmailMessage('Confirmacion de asesoria','Han solicitado una de tus asesorias',to=[user.email])
+     mail.send()
+     return render(request, 'CorreoAviso.html')
+
+@login_required
+def enviarAviso2(request,key,clase):
     user = User.objects.get(pk=key)
-    mail = EmailMessage('Confirmacion de asesoria','Han solicitado una de tus asesorias',to=[user.email])
+    taken = Take.objects.get(student=user.profile,course=clase)
+    taken.aceptada = True
+    taken.save()
+    mail = EmailMessage('Confirmacion de asesoria','Te han aceptado en una asesoría',to=[user.email])
     mail.send()
-    return render(request, 'CorreoAviso.html')
+    return render(request, 'AceptaAviso.html')
 
 @login_required
 def tomarClase(request):
