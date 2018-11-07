@@ -166,7 +166,7 @@ class CourseDetailView(DetailView):
 class UserDetailView(DetailView):
     model = User
 
-@user_passes_test(lambda u: u.has_perm('is_teacher'))
+@user_passes_test(lambda u: u.has_perm('aplicacion.is_teacher'))
 @login_required
 def modoProfesor(request):
     current_user = request.user
