@@ -206,7 +206,7 @@ def crearClase(request):
             return redirect('crearClase')
         else:
             form = CrearClaseForm()
-    return render(request, 'crearClase.html', {'form': form})
+    return render(request, 'teacherMode/crearClase.html', {'form': form})
 
 @login_required
 def edit_account(request):
