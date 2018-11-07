@@ -3,15 +3,28 @@
 {% block content %}
 
 
-    <div class="card col-md-5 offset-md-4 col-xs-12" >
+    <div class="card col-md-5 offset-md-4 col-xs-12">
         <div style="margin-top: 20px; text-align: center">
-             <h2>Regístrate</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form1.as_p }}
-            {{ form2.as_p }}
-            <button class="btn btn-primary" type="submit">Enviar</button>
-        </form>
+            <h2>Regístrate</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small style="display: none">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+                <button type="submit">Sign up</button>
+            </form>
+        </div>
     </div>
-    </div>
+
+
+
 {% endblock %}

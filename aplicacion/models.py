@@ -10,7 +10,6 @@ from aplicacion.modelFunctions import upload_profile_pic_to
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email_confirmed = models.BooleanField(default=False)
     bio = models.TextField(max_length=500, blank=True)
     language  = models.CharField(max_length=30,blank=True)
     birthdate = models.DateField(default='2000-01-01',blank=True)
@@ -52,6 +51,7 @@ class Take(models.Model):
     course     = models.ForeignKey(Course, on_delete=models.CASCADE)
     student_rating = models.IntegerField(blank=True,null=True)
     teacher_rating = models.IntegerField(blank=True,null=True)
+    aceptada = models.BooleanField(default=False)
 
 
     def __str__(self):

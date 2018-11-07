@@ -17,6 +17,16 @@ from django.template import RequestContext
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
 
 
 class UserList(generics.ListCreateAPIView):
@@ -66,7 +76,7 @@ def contactoEmail(request):
     return render(request, 'contacto_mail.html', {'formulario': formulario})
 
 
-def signup(request):
+"""def signup(request):
     if request.method == 'POST':
         form1 = SignUpForm(request.POST)
         form2 = ProfileForm(request.POST, request.FILES)
@@ -86,7 +96,47 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form1': form1,'form2':form2})
 
 
+"""
 
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'token':account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+            return HttpResponse('Por favor confirma tu correo para completar el registro')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return HttpResponse('Gracias por confirmar, ahora puedes ingresar.')
+    else:
+        return HttpResponse('Código de activación inválido')
 
 def logout_view(request):
     logout(request)
@@ -96,8 +146,7 @@ def logout_view(request):
 def index(request):
     return render(request, 'index.html')
 
-def CorreoAviso(request):
-    return render(request, 'CorreoAviso.html')
+
 
 
 
@@ -125,10 +174,11 @@ def modoProfesor(request):
     return render(request,'teacherMode/profesor.html', {'resultados': searchResult})
 
 @login_required
-def enviarAviso(request):
-    mail = EmailMessage('Confirmacion de asesoria','Han solicitado una de tus asesorias',to=['panlocastellanos@gmail.com'])
+def enviarAviso(request,key):
+    user = User.objects.get(pk=key)
+    mail = EmailMessage('Confirmacion de asesoria','Han solicitado una de tus asesorias',to=[user.email])
     mail.send()
-    return HttpResponseRedirect('CorreoAviso')
+    return render(request, 'CorreoAviso.html')
 
 @login_required
 def tomarClase(request):
@@ -173,7 +223,7 @@ def edit_account(request):
             u.set_password(form1.cleaned_data.get('password1'))
             if form1.cleaned_data.get('password1'):
                 u.save()
-            return redirect('index')
+            return redirect('edit-account')
     else:
         form1 = EditUserForm(instance=u)
         form2 = ProfileForm(instance=profile)

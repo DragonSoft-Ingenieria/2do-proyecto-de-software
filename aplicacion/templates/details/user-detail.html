@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="col-md-6 offset-3 card text-center">
-        <img src={{ user.profile.profile_pic }} class="img-responsive">
+        <img src="{{ user.profile.profile_pic.url }}" class="m-x-auto img-fluid img-circle" alt="avatar" />
         <h1>{{ user.first_name }}</h1>
         <p><strong>Apellido</strong> {{ user.last_name }}</p>
         <p><strong>E-mail:</strong> {{ user.email }}</p>

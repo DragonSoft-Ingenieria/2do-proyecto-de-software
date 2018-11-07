@@ -11,8 +11,7 @@ from django.conf.urls import include
 urlpatterns = [
     url(r'^users/$', views.UserList.as_view()),
     url(r'^signup/$', views.signup, name='signup'),
-    url(r'^index/$', views.index, name='index'),
-    url(r'^CorreoAviso/$', views.CorreoAviso, name='CorreoAviso'),
+    url(r'^$', views.index, name='index'),
     url(r'^course/$', views.CourseList.as_view()),
     url(r'^busca/$', views.busca,name='busca'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
@@ -26,8 +25,9 @@ urlpatterns = [
     url(r'^crearClase/$', views.crearClase, name='crearClase'),
     url(r'^contactoEmail/$', views.contactoEmail, name='contactoEmail'),
     path('tomarClase', views.tomarClase,name='tomarClase'),
-    path('enviarAviso', views.enviarAviso,name='enviarAviso'),
-
+    url('enviarAviso/(?P<key>\d+)/$', views.enviarAviso,name='enviarAviso'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
     path('profesor/', views.modoProfesor,name='modoProfesor'),
 ]
 
