@@ -75,7 +75,17 @@ class CrearClaseForm(forms.ModelForm):
         ('Noctuno', 'Nocturno'),
     )
 
+    CHOICES2 = (
+        ('Preescolar', 'Preescolar'),
+        ('Primaria', 'Primaria'),
+        ('Secundaria', 'Secundaria'),
+        ('Preparatoria', 'Preparatoria'),
+        ('Licenciatura', 'Licenciatura'),
+        ('Maestria', 'Maestria'),
+    )
+
     horario = forms.ChoiceField(label='Horario',widget=forms.Select, choices=CHOICES)
+    level = forms.ChoiceField(label='Nivel',widget=forms.Select, choices=CHOICES2)
     class Meta:
         model = Course
         exclude = ['teacher']
@@ -84,7 +94,7 @@ class CrearClaseForm(forms.ModelForm):
             # 'teacher' : forms.Select(attrs={'class' : 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nombre de la asesoria'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'level': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nivel de la asesoria'}),
+            #'level': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el nivel de la asesoria'}),
             'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el precio de la asesoria'}),
 
         }
@@ -93,7 +103,7 @@ class CrearClaseForm(forms.ModelForm):
             # 'teacher': _('Profesor'),
             'title': _('Titulo'),
             'description': _('Descripcion'),
-            'level': _('Nivel'),
+            #'level': _('Nivel'),
             'precio':_('Precio'),
             #'horario': _('Horario'),
         }
