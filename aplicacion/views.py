@@ -1,25 +1,15 @@
-from django.contrib.auth import login
-from django.http import HttpResponse
 from aplicacion.models import Profile, Course, Take
 from aplicacion.serializers import UserSerializer, CourseSerializer, TakeSerializer
 from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import login, authenticate
 from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm,Formulario
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.views.generic import DetailView
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.core.mail import EmailMessage
-from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -168,18 +158,26 @@ def modoProfesor(request):
     searchResult = Course.objects.filter(teacher=current_user.profile.id)
     return render(request,'teacherMode/profesor.html', {'resultados': searchResult})
 
+
 #@user_passes_test(lambda u: u.has_perm('aplicacion.is_teacher'))
 #@login_required
-def aceptar(request,key):
-    course = Course.objects.get(pk=key)
+def aceptar(request, key):
     taken = Take.objects.filter(course=key)
-    students = []
-    clase = key
+    aceptadas = set()
+    no_aceptadas = set()
     for t in taken:
         s = User.objects.get(profile=t.student)
-        if(not t.aceptada and s not in students):
-            students.append(s)
-    return render(request,'teacherMode/accept.html', {'resultados': students, 'clase': clase})
+        print(s.first_name + ' ' + str(t.aceptada))
+        if t.aceptada:
+            aceptadas.add((s, t))
+        else:
+            no_aceptadas.add(s)
+    return render(request,
+                  'teacherMode/accept.html',
+                  {'aceptadas': aceptadas,
+                   'no_aceptadas': no_aceptadas,
+                   'num_resultados': len(aceptadas) + len(no_aceptadas),
+                   'clase': key})
 
 
 @login_required
@@ -232,6 +230,7 @@ def crearClase(request):
             form = CrearClaseForm()
     return render(request, 'teacherMode/crearClase.html', {'form': form})
 
+
 @login_required
 def edit_account(request):
     u = request.user
@@ -252,5 +251,38 @@ def edit_account(request):
         form1 = EditUserForm(instance=u)
         form2 = ProfileForm(instance=profile)
     return render(request, 'registration/edit-account.html', {'form1': form1, 'form2': form2})
+
+
+@login_required
+def rate_user(request, user_id, take_id):
+    try:
+        user_r = User.objects.get(pk=user_id)
+        take = Take.objects.get(pk=take_id)
+        course = Course.objects.get(pk=take.course_id)
+    except User.DoesNotExist or Take.DoesNotExist or Course.DoesNotExist:
+        return redirect('index')
+    if request.user.id != course.teacher_id:
+        return redirect('index')
+    print(take.terminada)
+    # u = request.user
+    # profile = u.profile
+    # if request.method == 'POST':
+    #     POST = request.POST.copy()
+    #     POST['username'] = u.username # No se puede cambiar el username y django no rellena este campo automágicamente
+    #     form1 = EditUserForm(POST, instance=u)
+    #     form2 = ProfileForm(POST, request.FILES, instance=profile)
+    #     if form2.is_valid() and form1.is_valid():
+    #         form1.save()
+    #         form2.save()
+    #         u.set_password(form1.cleaned_data.get('password1'))
+    #         if form1.cleaned_data.get('password1'):
+    #             u.save()
+    #         return redirect('edit-account')
+    # else:
+    #     form1 = EditUserForm(instance=u)
+    #     form2 = ProfileForm(instance=profile)
+    # return render(request, 'registration/edit-account.html', {'form1': form1, 'form2': form2})
+    return render(request, 'rating.html', {})
+
 
 # Create your views here.

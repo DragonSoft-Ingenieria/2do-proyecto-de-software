@@ -109,4 +109,6 @@ class CrearClaseForm(forms.ModelForm):
         }
 
 
+class RatingForm(forms.ModelForm):
+    pass
 

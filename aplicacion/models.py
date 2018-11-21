@@ -38,7 +38,7 @@ class Course(models.Model):
     title       = models.CharField(max_length=50)
     description = models.TextField()
     level       = models.CharField(max_length=30)
-    horario     = models.CharField(max_length=30,default = 'MATUTINO')
+    horario     = models.CharField(max_length=30, default = 'MATUTINO')
     precio      = models.IntegerField(default=0)
 
 
@@ -49,9 +49,10 @@ class Course(models.Model):
 class Take(models.Model):
     student     = models.ForeignKey(Profile, on_delete=models.CASCADE)
     course     = models.ForeignKey(Course, on_delete=models.CASCADE)
-    student_rating = models.IntegerField(blank=True,null=True)
-    teacher_rating = models.IntegerField(blank=True,null=True)
+    student_rating = models.IntegerField(blank=True, null=True)
+    teacher_rating = models.IntegerField(blank=True, null=True)
     aceptada = models.BooleanField(default=False)
+    terminada = models.BooleanField(default=False)
 
 
     def __str__(self):
