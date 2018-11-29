@@ -3,7 +3,7 @@ from aplicacion.serializers import UserSerializer, CourseSerializer, TakeSeriali
 from rest_framework import generics
 from django.contrib.auth import logout
 from django.contrib import messages
-from aplicacion.forms import SignUpForm, CrearClaseForm, ProfileForm, EditUserForm,Formulario
+from aplicacion.forms import *
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
@@ -263,26 +263,15 @@ def rate_user(request, user_id, take_id):
         return redirect('index')
     if request.user.id != course.teacher_id:
         return redirect('index')
-    print(take.terminada)
-    # u = request.user
-    # profile = u.profile
-    # if request.method == 'POST':
-    #     POST = request.POST.copy()
-    #     POST['username'] = u.username # No se puede cambiar el username y django no rellena este campo automágicamente
-    #     form1 = EditUserForm(POST, instance=u)
-    #     form2 = ProfileForm(POST, request.FILES, instance=profile)
-    #     if form2.is_valid() and form1.is_valid():
-    #         form1.save()
-    #         form2.save()
-    #         u.set_password(form1.cleaned_data.get('password1'))
-    #         if form1.cleaned_data.get('password1'):
-    #             u.save()
-    #         return redirect('edit-account')
-    # else:
-    #     form1 = EditUserForm(instance=u)
-    #     form2 = ProfileForm(instance=profile)
-    # return render(request, 'registration/edit-account.html', {'form1': form1, 'form2': form2})
-    return render(request, 'rating.html', {})
+
+    form = RatingForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('edit-account')
+    else:
+        form = RatingForm(auto_id=False)
+    return render(request, 'rating.html', {'form': form})
 
 
 # Create your views here.

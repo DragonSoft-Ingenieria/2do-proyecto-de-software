@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms.widgets import DateInput
 from django.forms.widgets import NumberInput
-from aplicacion.models import Profile
+from aplicacion.models import Profile, Take
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from aplicacion.models import Course
@@ -110,5 +110,14 @@ class CrearClaseForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    pass
+    CHOICES = (
+        (1, 'One'),
+        (2, 'Two'),
+        (3, ''),
+    )
+    rate = forms.ChoiceField(label='Rad', widget=forms.RadioSelect, choices=CHOICES)
+    rate5 = forms.ChoiceField(label='', widget=forms.RadioSelect, choices=[(5, 'Five')])
 
+    class Meta:
+        model = Take
+        fields = ('student_rating', 'teacher_rating', 'rate', 'rate5')
