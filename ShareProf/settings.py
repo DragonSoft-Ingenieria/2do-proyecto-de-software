@@ -77,9 +77,17 @@ WSGI_APPLICATION = 'ShareProf.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'proyectoredes',
+        'USER': 'pr_admin',
+        'PASSWORD': 'hRe=3g6H-s+WSkL',
+        'HOST': 'db.proyectoredes.tk',
+        'PORT': '5432',
     }
 }
 
@@ -138,7 +146,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'shareprof1@gmail.com'
 EMAIL_HOST_PASSWORD = 'ingenieria2018'
-#EMAIL_USE_TLS = True
+EMAIL_USE_TLS = True
 #EMAIL_HOST = 'mail.proyectoredes.tk'
 #EMAIL_PORT = 25
 #EMAIL_HOST_USER = ''
